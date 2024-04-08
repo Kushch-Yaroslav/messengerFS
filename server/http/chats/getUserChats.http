@@ -1,0 +1,2 @@
+GET http://localhost:5000/api/chats/user/all HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2QyNzc1YWZmMDlhNmIzZjAwMmRhYjkiLCJlbWFpbCI6Im1haWxAbWFpbC52byIsImlhdCI6MTY3NTYyMTQ0MSwiZXhwIjoxNjc1NjI1MDQxfQ.moJacMipH0Zkkgbp84L4f5JsoD9O02vfOnfJ8LmYwUM

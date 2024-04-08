@@ -1,0 +1,6 @@
+PUT http://localhost:5000/api/chats/63d3e3b22fc5946e85ac627f HTTP/1.1
+Content-Type: application/json
+
+{
+    "userId": "63d295f6c16c3e953c69c481"
+}

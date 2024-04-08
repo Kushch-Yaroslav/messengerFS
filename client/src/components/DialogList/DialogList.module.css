@@ -1,0 +1,31 @@
+
+.dialog-list {
+    width: 20vw;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.dialog-list ul {
+    margin: 0;
+    padding: 0;
+
+}
+
+.dialog {
+    width: 100%;
+    padding: 10%;
+    list-style-type: none;
+    transition: all 0.5s ease;
+    border-radius: 3px;
+}
+
+.dialog:hover {
+  background-color: floralwhite;
+  cursor: pointer;
+}
+
+.active {
+    background-color: rgb(177, 212, 177);
+    font-weight: bold;
+}

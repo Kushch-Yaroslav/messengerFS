@@ -1,0 +1,2 @@
+GET http://localhost:5000/api/chats/63d3db43eb563b1714cc3f73 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2QyNzc1YWZmMDlhNmIzZjAwMmRhYjkiLCJlbWFpbCI6Im1haWxAbWFpbC52byIsImlhdCI6MTY3NTY4MjEwNSwiZXhwIjoxNjc1Njg1NzA1fQ.KU7eI9ZnC2WwrMNHajUyjHUroQ0YxTBr3daMiotc4co

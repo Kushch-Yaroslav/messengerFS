@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/chats/63d3db43eb563b1714cc3f73 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2QyNzc1YWZmMDlhNmIzZjAwMmRhYjkiLCJlbWFpbCI6Im1haWxAbWFpbC52byIsImlhdCI6MTY3NTM0ODczMiwiZXhwIjoxNjc1MzUyMzMyfQ.tTgQBvX3w0mWUgMYpsTpDea4NEGydu_YuWwE1Ve_WR0
+
+{
+    "body": "HHHIIIIIIII",
+    "status": false
+}

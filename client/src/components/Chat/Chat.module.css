@@ -1,0 +1,103 @@
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  /* background-color: #8aab5f; */
+
+  background-position: center;
+  background-size: cover;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.chat {
+  margin-top: 5%;
+  list-style: none;
+  padding: 0;
+}
+
+.message {
+  max-width: 60%; /* Сообщения занимают максимум 60% ширины */
+  padding: 10px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+  position: relative;
+}
+.message-time {
+  position: relative;
+  bottom: 1rem;
+  right: 0.25rem;
+  float: right;
+  line-height: 1.35;
+  height: calc(var(--message-meta-height, 1rem));
+  margin-left: 0.4375rem;
+  margin-right: -0.5rem;
+}
+
+.user-message {
+  margin-left: auto;
+  background-color: rgb(217, 245, 206);
+  color: rgb(37, 37, 37);
+}
+
+.message:not(.user-message) {
+  background-color: white; /* Сообщения других пользователей на белом фоне */
+  color: black; /* Черный текст */
+}
+
+.message-author {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: bold;
+  font-size: 13px;
+  color: #8a8a8a; /* Серый цвет для имени автора, как в Телеграмме */
+}
+
+.message-body {
+  margin-top: 4px;
+}
+
+.scrollDown {
+  position: fixed;
+  bottom: 100px;
+  right: 45%;
+  background-color: #3ba0ff; /* Цвет фона кнопки */
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /* Начальная прозрачность для плавного появления */
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease; /* Плавное появление и анимация при наведении */
+}
+
+.scrollDown::before {
+  content: "↓"; /* Символ стрелки вниз */
+  color: rgb(218, 218, 218); /* Цвет стрелки */
+  font-size: 24px; /* Размер стрелки */
+}
+
+.scrollDown:hover {
+  transform: scale(1.05);
+  background-color: #007bff;
+
+  transition: scale 0.2s ease-in-out,
+    background-color 0.2 ease-in-out transform 0.2s ease;
+}
+.visible {
+  opacity: 1; /* Полная видимость при необходимости отображения */
+}
+
+.formUp {
+  position: fixed;
+  width: 100%;
+  /* padding-right: 1rem; */
+  top: 0;
+  z-index: 999;
+}
