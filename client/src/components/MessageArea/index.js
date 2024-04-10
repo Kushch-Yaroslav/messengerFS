@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import styles from "./MessageArea.module.css";
 import { sendNewMessageAction } from "../../actions/actionCreators";
 import { connect } from "react-redux";
-
+import { socket } from "../../api/socket";
 const MessageArea = (props) => {
   const [message, setMessage] = useState("");
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    if (message) {
-      props.sendMessage({ body: message, chatId: props.currentChat._id });
+    const trimMessage = message.trim();
+    if (!trimMessage) {
+      return;
     }
+    props.sendMessage({ body: message, chatId: props.currentChat._id });
+    // socket.emit("NEW_MESSAGE", {
+    //   body: trimMessage,
+    //   chatId: props.currentChat._id,
+    // });
     setMessage(" ");
   };
 

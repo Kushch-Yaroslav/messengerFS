@@ -1,0 +1,6 @@
+.contexMenu {
+  list-style-type: none;
+  max-width: 250px;
+  max-height: 350px;
+  border: 1px solid black;
+}

@@ -1,4 +1,4 @@
-const { Chat, Message } = require("../models");
+const { Chat, Message, User } = require("../models");
 
 module.exports.createChat = async (req, res, next) => {
   try {
@@ -17,11 +17,14 @@ module.exports.addUserToChat = async (req, res, next) => {
       params: { chatId },
     } = req;
     const chatInstance = await Chat.findById(chatId);
-    console.log(chatInstance);
+    if (chatInstance.members.includes(userId)) {
+      res.status(400).send({ message: "Пользователь уже в чате" });
+    }
     chatInstance.members.push(userId);
     chatInstance.save();
     res.status(200).send(chatInstance);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -33,7 +36,6 @@ module.exports.addNewMessage = async (req, res, next) => {
       params: { chatId },
       payload: { userId },
     } = req;
-    console.log(body);
     const chatInstance = await Chat.findById(chatId);
     const newMessage = await Message.create({
       ...body,
@@ -43,8 +45,34 @@ module.exports.addNewMessage = async (req, res, next) => {
     await newMessage.populate("author", "firstName lastName");
     chatInstance.messages.push(newMessage);
     chatInstance.save();
-    console.log(`отправка клиенту ${newMessage}`);
     res.status(201).send({ data: newMessage });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports.deleteMessages = async (req, res, next) => {
+  try {
+    const {
+      params: { chatId },
+      body: { messageIds },
+    } = req;
+    console.log("SERVER CHATID", chatId);
+    console.log("SERVER MESSAGEID", messageIds);
+    if (!Array.isArray(messageIds) || messageIds.length === 0) {
+      return res.status(400).send({ message: "Нету переданных сообщений" });
+    }
+    const updateChat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $pull: { messages: { $in: messageIds } },
+      },
+      { new: true }
+    );
+    if (!updateChat) {
+      return res.status(404).send({ message: "Чат не найден" });
+    }
+    await Message.deleteMany({ _id: { $in: messageIds } });
+    res.status(200).send(`Сообщения: id ${messageIds} удалены`);
   } catch (error) {
     next(error);
   }
@@ -55,12 +83,9 @@ module.exports.getAllUserChats = async (req, res, next) => {
     const {
       payload: { userId },
     } = req;
-    const usersChat = await Chat.find(
-      {
-        members: userId,
-      },
-      "name members"
-    );
+    const usersChat = await Chat.find({
+      members: userId,
+    });
     res.status(200).send({ data: usersChat });
   } catch (error) {
     next(error);
@@ -72,10 +97,13 @@ module.exports.getChatWithMessages = async (req, res, next) => {
     const {
       params: { chatId },
     } = req;
-    const chatWithMessages = await Chat.findById(chatId).populate({
-      path: "messages",
-      populate: { path: "author", select: "firstName lastName" }, //из
-    });
+    const chatWithMessages = await Chat.findById(chatId)
+      .populate({
+        path: "messages",
+        populate: { path: "author", select: "firstName lastName" },
+      })
+      .populate("members", "firstName lastName")
+      .exec();
     res.status(200).send({ data: chatWithMessages });
   } catch (error) {
     next(error);

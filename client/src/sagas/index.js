@@ -1,6 +1,11 @@
 import { takeLatest } from "redux-saga/effects";
 import ACTION_TYPES from "../actions/actionTypes";
-import { createMessageSaga, getUserChatsSaga, getChatSaga } from "./chatSaga";
+import {
+  createMessageSaga,
+  getUserChatsSaga,
+  getChatSaga,
+  deleteMessageSaga,
+} from "./chatSaga";
 import {
   loginUserSaga,
   registerUserSaga,
@@ -18,6 +23,7 @@ function* rootSaga() {
   yield takeLatest(ACTION_TYPES.GET_USER_CHATS_REQUEST, getUserChatsSaga);
   yield takeLatest(ACTION_TYPES.GET_CHAT_WITH_MESSAGES_REQUEST, getChatSaga);
   yield takeLatest(ACTION_TYPES.LOGIN_USER_LOGOUT, logOutSaga);
+  yield takeLatest(ACTION_TYPES.DELETE_MESSAGE_REQUEST, deleteMessageSaga);
 }
 
 export default rootSaga;

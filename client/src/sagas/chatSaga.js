@@ -1,5 +1,10 @@
 import { put } from "redux-saga/effects";
-import { addNewMessage, getUserChats, getChatWithMessages } from "../api";
+import {
+  addNewMessage,
+  getUserChats,
+  getChatWithMessages,
+  deleteMessages,
+} from "../api";
 import {
   getChatWithMessagesError,
   getChatWithMessagesSuccess,
@@ -10,17 +15,20 @@ import {
   needAuthentication,
   otherError,
   networkError,
+  deleteMessagesSuccess,
+  deleteMessagesError,
 } from "../actions/actionCreators";
+import { socket } from "../api/socket";
 
 export function* createMessageSaga(action) {
   try {
     const {
       data: { data },
     } = yield addNewMessage(action.payload);
-    // По результату запиту - створити action з відповідю сервера і донести його до редьюсера
+
     yield put(sendNewMessageSuccess(data));
+    // socket.emit("NEW_MESSAGE", action.payload);
   } catch (error) {
-    // Якщо сталася помилка - ми маємо зробити новий action з помилкою і донести його до редьюсера
     yield put(sendNewMessageError(error));
   }
 }
@@ -53,5 +61,16 @@ export function* getChatSaga(action) {
     yield put(getChatWithMessagesSuccess(data));
   } catch (error) {
     yield put(getChatWithMessagesError(error));
+  }
+}
+
+export function* deleteMessageSaga(action) {
+  const { chatId, messageIds } = action.payload;
+  try {
+    console.log(`Saga deleting messages: ${messageIds} from chat: ${chatId}`);
+    yield deleteMessages({ chatId, messageIds });
+    yield put(deleteMessagesSuccess());
+  } catch (error) {
+    yield put(deleteMessagesError(error));
   }
 }

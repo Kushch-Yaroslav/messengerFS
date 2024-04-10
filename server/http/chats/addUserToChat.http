@@ -1,6 +1,7 @@
-PUT http://localhost:5000/api/chats/63d3e3b22fc5946e85ac627f HTTP/1.1
+PUT http://localhost:5000/api/chats/65d3fb9ceb99bd032d32793e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE1OTYyNGQ4OWY2MGQxYjZjYTIyZDUiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzEyNjkxMTI3LCJleHAiOjE3MTI2OTQ3Mjd9.ol_Kp2sP5KseIgm9exWpxbcb9Cdh6CAR0QUfr1CmmBM
 Content-Type: application/json
 
 {
-    "userId": "63d295f6c16c3e953c69c481"
+  "userId": "66159624d89f60d1b6ca22d5"
 }

@@ -19,6 +19,17 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         currentChat: {
+          // обновляем только текущий чат
+          ...state.currentChat, // копирование всех свойств текущего чата
+          messages: [...state.currentChat.messages, data], // создание нового массива сообщений, которое включает все предыдущие сообщеия + новое(data)
+        },
+      };
+    }
+    case ACTION_TYPES.NEW_MESSAGE_RECEIVED: {
+      const { data } = action;
+      return {
+        ...state,
+        currentChat: {
           ...state.currentChat,
           messages: [...state.currentChat.messages, data],
         },
@@ -52,10 +63,6 @@ function reducer(state = initialState, action) {
         needAuthentication: false,
       };
     }
-    // case ACTION_TYPES.GET_USER_CHATS_ERROR: {
-    //   const { error } = action;
-    //   return { ...state, error: error.messages };
-    // }
     case ACTION_TYPES.NEED_AUTHENTICATION: {
       return { ...state, needAuthentication: true };
     }
@@ -71,7 +78,7 @@ function reducer(state = initialState, action) {
         errorMessage: `Произошла ошибка ${action.payload.error}`,
       };
     }
-
+    case ACTION_TYPES.DELETE_MESSAGE_ERROR:
     case ACTION_TYPES.GET_CHAT_WITH_MESSAGES_ERROR:
     case ACTION_TYPES.LOGIN_USER_ERROR:
     case ACTION_TYPES.REGISTER_USER_ERROR:
@@ -103,7 +110,21 @@ function reducer(state = initialState, action) {
     case ACTION_TYPES.LOGIN_USER_LOGOUT: {
       return initialState;
     }
-
+    case ACTION_TYPES.DELETE_MESSAGE_REQUEST: {
+      return { ...state };
+    }
+    case ACTION_TYPES.DELETE_MESSAGE_SUCCESS: {
+      const { data } = action;
+      return {
+        ...state,
+        currentChat: {
+          ...state.currentChat,
+          messages: state.currentChat.messages.filter(
+            (message) => !data.includes(message._id)
+          ),
+        },
+      };
+    }
     default: {
       return state;
     }

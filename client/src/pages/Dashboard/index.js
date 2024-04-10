@@ -6,8 +6,8 @@ import styles from "./Dashboard.module.css";
 import history from "../../browserHistory";
 import { connect } from "react-redux";
 import { getUserDataAction } from "../../actions/actionCreators";
-import FormExample from "../../components/Navbar";
 
+import MiddleHeader from "../../components/middleHeader";
 const Dashboard = (props) => {
   useEffect(() => {
     if (!props.user) {
@@ -23,6 +23,12 @@ const Dashboard = (props) => {
     <main className={styles.main}>
       <DialogList />
       <section className={styles.container}>
+        {props.currentChat && (
+          <div className={styles.formUp}>
+            <MiddleHeader />
+          </div>
+        )}
+
         <Chat />
         {props.currentChat && <MessageArea />}
       </section>

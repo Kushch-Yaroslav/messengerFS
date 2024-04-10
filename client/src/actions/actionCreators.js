@@ -114,3 +114,19 @@ export const networkError = (error) => ({
   type: ACTION_TYPES.NETWORK_ERROR,
   payload: { error },
 });
+
+///
+export const deleteMessagesAction = (payload) => ({
+  type: ACTION_TYPES.DELETE_MESSAGE_REQUEST,
+  payload,
+});
+
+export const deleteMessagesSuccess = (data) => ({
+  type: ACTION_TYPES.DELETE_MESSAGE_SUCCESS,
+  data,
+});
+
+export const deleteMessagesError = (error) => ({
+  type: ACTION_TYPES.DELETE_MESSAGE_ERROR,
+  error,
+});
