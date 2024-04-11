@@ -1,11 +1,6 @@
-export const handleDelete = (
-  deleteMessage,
-  currentChat,
-  contextMenu,
-  setContextMenu
-) => {
+// Удаление одного сообщения
+export const handleDelete = (deleteMessage, currentChat, setContextMenu) => {
   return (contextMenu) => {
-    console.log(`Deleting messageId: ${contextMenu?.messageId}`);
     if (contextMenu && contextMenu.messageId) {
       deleteMessage({
         chatId: currentChat._id,
@@ -13,5 +8,21 @@ export const handleDelete = (
       });
       setContextMenu(null);
     }
+  };
+};
+
+// Удаление нескольких сообщений
+export const handleDeleteSelected = (
+  currentChat,
+  deleteMessage,
+  setSelectedMessages,
+  selectedMessages
+) => {
+  return () => {
+    deleteMessage({
+      chatId: currentChat._id,
+      messageIds: selectedMessages,
+    });
+    setSelectedMessages([]); // Очистка выбора после удаления
   };
 };

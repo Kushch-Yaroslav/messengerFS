@@ -92,3 +92,6 @@
 .visible {
   opacity: 1; /* Полная видимость при необходимости отображения */
 }
+.selected {
+  background-color: rgb(87, 86, 86);
+}

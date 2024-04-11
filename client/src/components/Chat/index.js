@@ -6,21 +6,50 @@ import ScrollDown from "./scrollToBottomBtn";
 import { deleteMessagesAction } from "../../actions/actionCreators";
 import ContextMenu from "./contextMenu";
 import { handleContextMenu } from "./chatServise/handleContexMenu";
-import { handleDelete } from "./chatServise/handleDelete";
+import { handleDelete, handleDeleteSelected } from "./chatServise/handleDelete";
 
 const Chat = ({ currentChat, user, deleteMessage }) => {
   const [contextMenu, setContextMenu] = useState(null);
-
+  const [selectedMessages, setSelectedMessages] = useState([]);
+  const [selectedText, setSelectedText] = useState("");
   const chatContainerRef = useRef(null);
   const lastMessageRef = useRef(null);
 
-  const handleContexMenuParams = handleContextMenu(setContextMenu, currentChat);
+  ///////////////////////////
+  const toggleMessageSelection = (messageId) => {
+    setSelectedMessages((prevSelected) => {
+      return prevSelected.includes(messageId)
+        ? prevSelected.filter((id) => id !== messageId)
+        : [...prevSelected, messageId];
+    });
+  };
+  const handleTextState = (event) => {
+    const copyText = event.target.textContent;
+    console.log(`Выбран текст: ${copyText}`);
+    setSelectedText(copyText);
+  };
 
-  const handleDeleteParams = handleDelete(
-    deleteMessage,
+  /////////////////////////// Для удаления нескольких
+  const handleDeleteSelectedParams = handleDeleteSelected(
     currentChat,
+    deleteMessage,
+    setSelectedMessages,
+    selectedMessages
+  );
+  /////////////////////////// Для удаления одного
+  const handleDeleteParams = handleDelete(
+    currentChat,
+    deleteMessage,
     contextMenu,
     setContextMenu
+  );
+
+  /////////////////////////// Для контекстного меню
+  const handleContexMenuParams = handleContextMenu(
+    setContextMenu,
+    currentChat,
+    chatContainerRef,
+    toggleMessageSelection
   );
 
   //К последнему сообщению
@@ -30,25 +59,32 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
     }
   }, [currentChat]);
 
+  //Контекст меню
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (contextMenu && !event.target.closest(".context-menu")) {
         setContextMenu(null);
       }
     };
-
     document.addEventListener("click", handleClickOutside);
-
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [contextMenu]);
 
   const messageMap = (msg, index) => {
+    // При отрисовке каждого сообщения
+    const isMessageSelected = selectedMessages.includes(msg._id);
     const isLastMessage = index === currentChat.messages.length - 1;
-    const cn = cx(styles.message, {
-      [styles["user-message"]]: msg.author._id === user._id,
-    });
+    const cn = cx(
+      styles.message,
+      {
+        [styles["user-message"]]: msg.author._id === user._id,
+      },
+      {
+        [styles.selected]: isMessageSelected, // Добавление класса для выбранных сообщений
+      }
+    );
 
     //Абзацы в сообщении
     const messageWithBreaks = msg.body.split("\n").map((text, index) => (
@@ -67,7 +103,9 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
         data-message-id={msg._id}
       >
         <span className={styles["message-author"]}>{msg.author.firstName}</span>
-        <span className={styles["message-body"]}>{messageWithBreaks}</span>
+        <span onClick={handleTextState} className={styles["message-body"]}>
+          {messageWithBreaks}
+        </span>
         <span className={styles["message-time"]}>
           {new Date(msg.createdAt).toLocaleTimeString([], {
             hour: "2-digit",
@@ -79,16 +117,16 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
   };
 
   return (
-    <div
-      // onContextMenu={handleContexMenuParams}
-      className={styles["chat-wrapper"]}
-      ref={chatContainerRef}
-    >
+    <div className={styles["chat-wrapper"]} ref={chatContainerRef}>
       {contextMenu && (
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
           onDelete={() => handleDeleteParams(contextMenu)}
+          onToggleSelect={contextMenu.onToggleSelect}
+          handleDeleteSelectedParams={handleDeleteSelectedParams}
+          selectedMessages={selectedMessages}
+          selectedText={selectedText}
         />
       )}
       <ul className={styles.chat}>
