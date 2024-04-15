@@ -1,4 +1,4 @@
-.chat-wrapper {
+.chatWrapper {
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -13,10 +13,13 @@
 .chat {
   list-style: none;
   padding: 0;
+  margin-bottom: 2.5rem;
 }
 
 .message {
-  max-width: 60%; /* Сообщения занимают максимум 60% ширины */
+  display: flex; /* Изменено на flex для лучшего контроля расположения */
+  align-items: center; /* Выравнивание элементов по центру */
+  max-width: 55%; /* Сообщения занимают максимум 55% ширины */
   padding: 10px;
   margin-bottom: 4px;
   border-radius: 8px;
@@ -25,37 +28,41 @@
   word-break: break-word;
   position: relative;
 }
-.message-time {
-  position: relative;
-  bottom: 1rem;
-  right: 0.25rem;
-  float: right;
+.messageContent {
+  flex-grow: 1;
+}
+.messageTime {
+  display: flex;
+  justify-content: flex-end;
+  white-space: nowrap;
+  margin-left: auto;
   line-height: 1.35;
-  height: calc(var(--message-meta-height, 1rem));
-  margin-left: 0.4375rem;
-  margin-right: -0.5rem;
+  font-size: 1em;
+  color: rgb(0, 156, 86);
 }
 
-.user-message {
+.userMessage {
   margin-left: auto;
   background-color: rgb(217, 245, 206);
   color: rgb(37, 37, 37);
 }
 
-.message:not(.user-message) {
+.message:not(.userMessage) {
   background-color: white; /* Сообщения других пользователей на белом фоне */
   color: black; /* Черный текст */
 }
 
-.message-author {
+.messageAuthor {
   display: block;
   margin-bottom: 2px;
+  margin-right: 4px;
   font-weight: bold;
   font-size: 13px;
   color: #8a8a8a; /* Серый цвет для имени автора, как в Телеграмме */
 }
 
-.message-body {
+.messageBody {
+  flex-grow: 1;
   margin-top: 4px;
 }
 

@@ -69,7 +69,7 @@ export function* deleteMessageSaga(action) {
   try {
     console.log(`Saga deleting messages: ${messageIds} from chat: ${chatId}`);
     yield deleteMessages({ chatId, messageIds });
-    yield put(deleteMessagesSuccess());
+    yield put(deleteMessagesSuccess(messageIds));
   } catch (error) {
     yield put(deleteMessagesError(error));
   }

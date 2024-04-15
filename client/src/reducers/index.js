@@ -115,6 +115,7 @@ function reducer(state = initialState, action) {
     }
     case ACTION_TYPES.DELETE_MESSAGE_SUCCESS: {
       const { data } = action;
+
       return {
         ...state,
         currentChat: {

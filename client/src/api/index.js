@@ -1,41 +1,11 @@
 import axios from "axios";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import store from "../store";
 import ACTION_TYPES from "../actions/actionTypes";
-import { socket } from "./socket";
+// import { socket } from "./socket";
 const httpClient = axios.create({
   baseURL: "http://localhost:5000/api",
 });
-
-//Веб сокеты
-// Varian 1
-const notify = (data) => ({
-  type: "NOTIFICATION",
-  data,
-});
-
-const messageReceived = (newMessage) => ({
-  type: "NEW_MESSAGE_RECEIVED",
-  data: newMessage,
-});
-
-socket.on("NEW_NOTIFICATION", (data) => {
-  store.dispatch(notify(data));
-});
-
-socket.on("MESSAGE_RECEIVED", (newMessage) => {
-  store.dispatch(messageReceived(newMessage));
-});
-// const socket = io("ws://localhost:5000/");
-// Varian 2
-// socket.on("NEW_NOTIFICATION", (data) => {
-//   console.log(data);
-//   store.dispatch({
-//     type: ACTION_TYPES.NOTIFICATION,
-//     data,
-//   });
-//   socket.emit("NEW_MESSAGE", "I want to say something");
-// });
 
 /* Auth api */
 
@@ -101,9 +71,7 @@ httpClient.interceptors.response.use(
   }
 );
 
-/* Chat api
-
-*/
+//Chat api
 
 export const createChat = async (data) =>
   await httpClient.post("/chats/", data);
@@ -125,3 +93,33 @@ export const deleteMessages = async ({ chatId, messageIds }) => {
     data: { messageIds },
   });
 };
+
+//Веб сокеты
+// Varian 1
+// const notify = (data) => ({
+//   type: "NOTIFICATION",
+//   data,
+// });
+
+// const messageReceived = (newMessage) => ({
+//   type: "NEW_MESSAGE_RECEIVED",
+//   data: newMessage,
+// });
+
+// socket.on("NEW_NOTIFICATION", (data) => {
+//   store.dispatch(notify(data));
+// });
+
+// socket.on("MESSAGE_RECEIVED", (newMessage) => {
+//   store.dispatch(messageReceived(newMessage));
+// });
+// const socket = io("ws://localhost:5000/");
+// Varian 2
+// socket.on("NEW_NOTIFICATION", (data) => {
+//   console.log(data);
+//   store.dispatch({
+//     type: ACTION_TYPES.NOTIFICATION,
+//     data,
+//   });
+//   socket.emit("NEW_MESSAGE", "I want to say something");
+// });

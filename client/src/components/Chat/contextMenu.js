@@ -12,7 +12,7 @@ const ContextMenu = ({
 }) => {
   const menuStyle = {
     position: `absolute`,
-    "z-index": "999",
+    zIndex: "999",
     top: `${y - window.scrollY}px`,
     left: `${x - window.scrollX}px`,
   };

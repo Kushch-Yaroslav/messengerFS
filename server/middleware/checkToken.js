@@ -6,6 +6,7 @@ module.exports.checkToken = async (req, res, next) => {
     const {
       headers: { authorization },
     } = req;
+    console.log(authorization);
     if (!authorization) {
       throw new TokenError("Need authorization");
     }

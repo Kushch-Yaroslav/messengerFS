@@ -73,16 +73,6 @@ module.exports.getOneUser = async (req, res, next) => {
   }
 };
 
-/*
-1. Приходить запит на рефреш (оновлення).
- - RT валідний, ми можемо оновити сесію, згенерувати і видати користувачу свіжу пару токенів.
-    При цьому маємо ВИДАЛИТИ з БД старий RT і зберегти новий.
- - RT невалідний, ми не можемо оновити сесію. Ми маємо змусити користувача перелогінитись
-
-
-
-*/
-
 module.exports.refreshSession = async (req, res, next) => {
   const {
     body,
@@ -113,7 +103,7 @@ module.exports.refreshSession = async (req, res, next) => {
       }); /// RefreshToken not found
 
       if (rtFromDB) {
-        const removeRes = await rtFromDB.deleteOne(); // TODO: check if RT succefully deleted
+        const removeRes = await rtFromDB.deleteOne();
         /// Робимо нову пару токенів
         const newAccessToken = await createAccessToken({
           userId: foundUser._id,

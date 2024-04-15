@@ -1,7 +1,8 @@
 POST http://localhost:5000/api/chats/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWNlYTFjNzYwYTM4ODQ2YjE4ODRhM2EiLCJlbWFpbCI6Im1hbGJvcm9kbzEyM0BnbWFpbC5jb20iLCJpYXQiOjE3MTI5NTk5NzgsImV4cCI6MTcxMjk2MzU3OH0.ci6Qe31riwzJwXXlCNMddnz8zV-EjZwZfyC7wKV0Zzw
 Content-Type: application/json
 
 {
-    "name": "My Second Chat",
-    "members":["63d2775aff09a6b3f002dab9"]
+    "name": "My Third Chat",
+    "members":["65ce83169e284f693e03f2b4","65cea1c760a38846b1884a3a"]
 }

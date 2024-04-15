@@ -19,10 +19,12 @@ export const handleDeleteSelected = (
   selectedMessages
 ) => {
   return () => {
+    console.log("Before delete", { selectedMessages });
     deleteMessage({
       chatId: currentChat._id,
       messageIds: selectedMessages,
     });
+    console.log("After delete", { selectedMessages });
     setSelectedMessages([]); // Очистка выбора после удаления
   };
 };

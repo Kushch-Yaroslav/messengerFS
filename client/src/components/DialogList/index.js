@@ -30,6 +30,8 @@ const DialogList = (props) => {
   };
 
   const mapList = (chat) => {
+    console.log(chat);
+    console.log(chat.name);
     const cn = cx(styles.dialog, {
       [styles.active]: chat._id === currentChat?._id,
     });

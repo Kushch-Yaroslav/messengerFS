@@ -7,6 +7,7 @@ import { deleteMessagesAction } from "../../actions/actionCreators";
 import ContextMenu from "./contextMenu";
 import { handleContextMenu } from "./chatServise/handleContexMenu";
 import { handleDelete, handleDeleteSelected } from "./chatServise/handleDelete";
+import { formatTimeMessage } from "./chatServise/formatTimeMessage";
 
 const Chat = ({ currentChat, user, deleteMessage }) => {
   const [contextMenu, setContextMenu] = useState(null);
@@ -38,9 +39,8 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
   );
   /////////////////////////// Для удаления одного
   const handleDeleteParams = handleDelete(
-    currentChat,
     deleteMessage,
-    contextMenu,
+    currentChat,
     setContextMenu
   );
 
@@ -79,7 +79,7 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
     const cn = cx(
       styles.message,
       {
-        [styles["user-message"]]: msg.author._id === user._id,
+        [styles.userMessage]: msg.author._id === user._id,
       },
       {
         [styles.selected]: isMessageSelected, // Добавление класса для выбранных сообщений
@@ -102,22 +102,21 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
         onContextMenu={handleContexMenuParams}
         data-message-id={msg._id}
       >
-        <span className={styles["message-author"]}>{msg.author.firstName}</span>
-        <span onClick={handleTextState} className={styles["message-body"]}>
-          {messageWithBreaks}
-        </span>
-        <span className={styles["message-time"]}>
-          {new Date(msg.createdAt).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </span>
+        <div className={styles.messageContent}>
+          <span className={styles.messageAuthor}>{msg.author.firstName}</span>
+          <span onClick={handleTextState} className={styles.messageBody}>
+            {messageWithBreaks}
+          </span>
+          <span className={styles.messageTime}>
+            {formatTimeMessage(msg.createdAt)}
+          </span>
+        </div>
       </li>
     );
   };
 
   return (
-    <div className={styles["chat-wrapper"]} ref={chatContainerRef}>
+    <div className={styles.chatWrapper} ref={chatContainerRef}>
       {contextMenu && (
         <ContextMenu
           x={contextMenu.x}
@@ -146,3 +145,5 @@ const mapDispatchToProps = {
   deleteMessage: deleteMessagesAction,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+
+//Пофиксил время, но надо пофиксить ошибку об удалении сообщения

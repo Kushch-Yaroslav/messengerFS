@@ -1,25 +1,30 @@
 const http = require("http");
-const { Server } = require("socket.io");
+// const { Server } = require("socket.io");
 const app = require("./app.js");
 
 const PORT = process.env.PORT || 5000;
 
-const cors = {
-  origin: "*",
-};
-
 const server = http.createServer(app);
+
+server.listen(PORT, () => {
+  console.log(`App started on port ${PORT}`);
+});
+
+// const cors = {
+//   origin: "*",
+// };
+
 // Varian 1
 
-const io = new Server(server, { cors });
+// const io = new Server(server, { cors });
 
-io.on("connect", (socket) => {
-  console.log("Новый пользователь подключен");
-  socket.on("NEW_MESSAGE", (messages) => {
-    console.log("Новое сообщение доставлено", messages);
-    io.emit("MESSAGE_RECEIVED", messages);
-  });
-});
+// io.on("connect", (socket) => {
+//   console.log("Новый пользователь подключен");
+//   socket.on("NEW_MESSAGE", (messages) => {
+//     console.log("Новое сообщение доставлено", messages);
+//     io.emit("MESSAGE_RECEIVED", messages);
+//   });
+// });
 // Varian 2
 // io.on("connect", (socket) => {
 //   console.log("CONNECTION IS HERE");
@@ -34,7 +39,3 @@ io.on("connect", (socket) => {
 //     });
 //   });
 // });
-
-server.listen(PORT, () => {
-  console.log(`App started on port ${PORT}`);
-});
