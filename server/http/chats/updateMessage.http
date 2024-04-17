@@ -1,0 +1,7 @@
+PATCH  http://localhost:5000/api/chats/messages/6615c5b09720db7f565f32b5 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWNlYTFjNzYwYTM4ODQ2YjE4ODRhM2EiLCJlbWFpbCI6Im1hbGJvcm9kbzEyM0BnbWFpbC5jb20iLCJpYXQiOjE3MTMyMjU4NzUsImV4cCI6MTcxMzIyOTQ3NX0.cop5xNkoFLGK0My9IQpBitkAuVPZRldU1YTC-yd9Jso
+
+{
+    "body": "Измененное сообщение"
+}

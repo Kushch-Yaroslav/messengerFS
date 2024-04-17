@@ -34,7 +34,7 @@ module.exports.addNewMessage = async (req, res, next) => {
     const {
       body,
       params: { chatId },
-      payload: { userId },
+      payload: { userId }, //payload содержит информацию о пользователе из токена.
     } = req;
     const chatInstance = await Chat.findById(chatId);
     const newMessage = await Message.create({
@@ -50,6 +50,41 @@ module.exports.addNewMessage = async (req, res, next) => {
     next(error);
   }
 };
+module.exports.updateMessage = async (req, res, next) => {
+  try {
+    const {
+      params: { messageId },
+      payload: { userId },
+      body: { body },
+    } = req;
+
+    const message = await Message.findById(messageId);
+
+    if (!message) {
+      return res.status(404).send({ message: "Сообщение не найдено" });
+    }
+    if (message.author.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .send({ message: "Нет прав на редактирование сообщений" });
+    }
+    const updateMessage = await Message.findByIdAndUpdate(
+      messageId,
+      { body: body },
+      {
+        new: true,
+      }
+    ).populate("author", "_id firstName lastName");
+    if (updateMessage) {
+      res.status(200).send({ data: updateMessage });
+    } else {
+      res.status(404).send({ message: "Ошибка при обновлении сообщения" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.deleteMessages = async (req, res, next) => {
   try {
     const {

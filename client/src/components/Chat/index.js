@@ -3,18 +3,36 @@ import styles from "./Chat.module.css";
 import { connect } from "react-redux";
 import cx from "classnames";
 import ScrollDown from "./scrollToBottomBtn";
-import { deleteMessagesAction } from "../../actions/actionCreators";
+import {
+  deleteMessagesAction,
+  updateMessageAction,
+  setEditableMessage,
+} from "../../actions/actionCreators";
 import ContextMenu from "./contextMenu";
 import { handleContextMenu } from "./chatServise/handleContexMenu";
 import { handleDelete, handleDeleteSelected } from "./chatServise/handleDelete";
 import { formatTimeMessage } from "./chatServise/formatTimeMessage";
+import { handleEditMessage } from "./chatServise/handleUpdate";
 
-const Chat = ({ currentChat, user, deleteMessage }) => {
+const Chat = ({
+  currentChat,
+  user,
+  deleteMessage,
+  setEditableMessage,
+  ...props
+}) => {
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedMessages, setSelectedMessages] = useState([]);
   const [selectedText, setSelectedText] = useState("");
   const chatContainerRef = useRef(null);
   const lastMessageRef = useRef(null);
+  const onEditMessage = (messageId, messageContent) => {
+    console.log(
+      `Редактирование сообщения с ID: ${messageId}, текст: ${messageContent}`
+    );
+    // setEditableMessage({ messageId: messageId, text: messageContent });
+    handleEditMessage(setEditableMessage, messageId, messageContent);
+  };
 
   ///////////////////////////
   const toggleMessageSelection = (messageId) => {
@@ -75,16 +93,12 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
   const messageMap = (msg, index) => {
     // При отрисовке каждого сообщения
     const isMessageSelected = selectedMessages.includes(msg._id);
+
     const isLastMessage = index === currentChat.messages.length - 1;
-    const cn = cx(
-      styles.message,
-      {
-        [styles.userMessage]: msg.author._id === user._id,
-      },
-      {
-        [styles.selected]: isMessageSelected, // Добавление класса для выбранных сообщений
-      }
-    );
+    const cn = cx(styles.message, {
+      [styles.userMessage]: msg.author._id === user._id,
+      [styles.selected]: isMessageSelected, // Добавление класса для выбранных сообщений
+    });
 
     //Абзацы в сообщении
     const messageWithBreaks = msg.body.split("\n").map((text, index) => (
@@ -121,11 +135,13 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
+          onEdit={onEditMessage}
           onDelete={() => handleDeleteParams(contextMenu)}
           onToggleSelect={contextMenu.onToggleSelect}
           handleDeleteSelectedParams={handleDeleteSelectedParams}
           selectedMessages={selectedMessages}
           selectedText={selectedText}
+          messageId={contextMenu.messageId}
         />
       )}
       <ul className={styles.chat}>
@@ -142,8 +158,10 @@ const Chat = ({ currentChat, user, deleteMessage }) => {
 
 const mapStateToProps = ({ user, currentChat }) => ({ user, currentChat });
 const mapDispatchToProps = {
+  setEditableMessage: setEditableMessage,
   deleteMessage: deleteMessagesAction,
+  updateMessage: updateMessageAction,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 
-//Пофиксил время, но надо пофиксить ошибку об удалении сообщения
+///Необходимо оптимизировать компоненты

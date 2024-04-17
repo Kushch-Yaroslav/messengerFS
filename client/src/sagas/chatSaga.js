@@ -4,6 +4,7 @@ import {
   getUserChats,
   getChatWithMessages,
   deleteMessages,
+  updateMessage,
 } from "../api";
 import {
   getChatWithMessagesError,
@@ -17,17 +18,16 @@ import {
   networkError,
   deleteMessagesSuccess,
   deleteMessagesError,
+  updateMessageError,
+  updateMessageSuccess,
 } from "../actions/actionCreators";
-import { socket } from "../api/socket";
 
 export function* createMessageSaga(action) {
   try {
     const {
       data: { data },
     } = yield addNewMessage(action.payload);
-
     yield put(sendNewMessageSuccess(data));
-    // socket.emit("NEW_MESSAGE", action.payload);
   } catch (error) {
     yield put(sendNewMessageError(error));
   }
@@ -68,9 +68,19 @@ export function* deleteMessageSaga(action) {
   const { chatId, messageIds } = action.payload;
   try {
     console.log(`Saga deleting messages: ${messageIds} from chat: ${chatId}`);
-    yield deleteMessages({ chatId, messageIds });
+    yield deleteMessages(action.payload);
     yield put(deleteMessagesSuccess(messageIds));
   } catch (error) {
     yield put(deleteMessagesError(error));
+  }
+}
+
+export function* updateMessageSaga(action) {
+  const { messageId, updateData } = action.payload;
+  try {
+    const response = yield updateMessage(messageId, updateData);
+    yield put(updateMessageSuccess(response.data));
+  } catch (error) {
+    yield put(updateMessageError(error));
   }
 }

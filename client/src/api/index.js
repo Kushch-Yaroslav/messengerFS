@@ -94,6 +94,10 @@ export const deleteMessages = async ({ chatId, messageIds }) => {
   });
 };
 
+export const updateMessage = async (messageId, updateData) => {
+  console.log(`API messageId: ${messageId}, updateData:${updateData}`);
+  await httpClient.patch(`/chats/messages/${messageId}`, updateData);
+};
 //Веб сокеты
 // Varian 1
 // const notify = (data) => ({

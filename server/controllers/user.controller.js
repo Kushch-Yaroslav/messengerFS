@@ -29,10 +29,7 @@ module.exports.signInUser = async (req, res, next) => {
     });
     if (foundUser) {
       const result = await bcrypt.compare(password, foundUser.passwordHash);
-      // Або пароль правильний, або ні.
-      console.log(result);
       if (result) {
-        /// Створити токен для юзера і відправити його у відповідь
         const accessToken = await createAccessToken({
           userId: foundUser._id,
           email: foundUser.email,
@@ -90,7 +87,6 @@ module.exports.refreshSession = async (req, res, next) => {
       const foundUser = await User.findOne({
         email: verifyPayload.email,
       });
-      console.log(foundUser);
       const rtFromDB = await RefreshToken.findOne({
         $and: [
           {

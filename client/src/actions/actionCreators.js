@@ -1,6 +1,6 @@
 import ACTION_TYPES from "./actionTypes";
 
-/*  Auth actionCreators  */
+///Авторизация пользователя
 
 export const loginUserAction = (payload) => ({
   type: ACTION_TYPES.LOGIN_USER_REQUEST,
@@ -19,8 +19,8 @@ export const logingUserError = (error) => ({
 export const loginUserLogOut = () => ({
   type: ACTION_TYPES.LOGIN_USER_LOGOUT,
 });
-///////
 
+///Регистрация пользователя
 export const registerUserAction = (payload) => ({
   type: ACTION_TYPES.REGISTER_USER_REQUEST,
   payload,
@@ -36,8 +36,7 @@ export const registerUserError = (error) => ({
   error,
 });
 
-/////////
-
+///
 export const getUserDataAction = () => ({
   type: ACTION_TYPES.GET_USER_DATA_REQUEST,
 });
@@ -52,8 +51,7 @@ export const getUserDataError = (error) => ({
   error,
 });
 
-/* Chat actionCreators */
-
+///Отправка нового сообщения
 export const sendNewMessageAction = (payload) => ({
   type: ACTION_TYPES.SEND_NEW_MESSAGE_REQUEST,
   payload,
@@ -70,7 +68,6 @@ export const sendNewMessageError = (error) => ({
 });
 
 ///////
-
 export const getUserChatsAction = () => ({
   type: ACTION_TYPES.GET_USER_CHATS_REQUEST,
 });
@@ -85,8 +82,7 @@ export const getUserChatsError = (error) => ({
   error,
 });
 
-//////
-
+//////Получение сообщений чата
 export const getChatWithMessagesAction = (payload) => ({
   type: ACTION_TYPES.GET_CHAT_WITH_MESSAGES_REQUEST,
   payload,
@@ -102,7 +98,7 @@ export const getChatWithMessagesError = (error) => ({
   error,
 });
 
-///
+///Кастомные ошибки
 export const needAuthentication = () => ({
   type: ACTION_TYPES.NEED_AUTHENTICATION,
 });
@@ -115,7 +111,7 @@ export const networkError = (error) => ({
   payload: { error },
 });
 
-///
+///Удаление сообщений
 export const deleteMessagesAction = (payload) => ({
   type: ACTION_TYPES.DELETE_MESSAGE_REQUEST,
   payload,
@@ -129,4 +125,27 @@ export const deleteMessagesSuccess = (data) => ({
 export const deleteMessagesError = (error) => ({
   type: ACTION_TYPES.DELETE_MESSAGE_ERROR,
   error,
+});
+
+///Иземение сообщений
+export const updateMessageAction = (messageId, updateData) => ({
+  type: ACTION_TYPES.UPDATE_MESSAGE_REQUEST,
+  payload: { messageId, updateData },
+});
+export const updateMessageSuccess = (data) => ({
+  type: ACTION_TYPES.UPDATE_MESSAGE_SUCCESS,
+  data,
+});
+
+export const updateMessageError = (error) => ({
+  type: ACTION_TYPES.UPDATE_MESSAGE_ERROR,
+  error,
+});
+
+export const setEditableMessage = (message) => ({
+  type: ACTION_TYPES.SET_EDITABLE_MESSAGE,
+  payload: message,
+});
+export const clearEditableMessage = () => ({
+  type: ACTION_TYPES.CLEAR_EDITABLE_MESSAGE,
 });

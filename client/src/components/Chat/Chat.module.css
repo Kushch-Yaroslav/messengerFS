@@ -51,6 +51,21 @@
   background-color: white; /* Сообщения других пользователей на белом фоне */
   color: black; /* Черный текст */
 }
+.message.selected {
+  background-color: rgb(87, 86, 86); /* Стили для выбранных сообщений */
+}
+
+/* Отдельные стили для сообщений от текущего пользователя, когда они выбраны */
+.message.userMessage.selected {
+  background-color: rgb(112, 112, 112);
+  color: rgb(255, 255, 255);
+}
+
+/* Отдельные стили для сообщений от других пользователей, когда они выбраны */
+.message:not(.userMessage).selected {
+  background-color: rgb(87, 86, 86);
+  color: rgb(165, 163, 163);
+}
 
 .messageAuthor {
   display: block;
@@ -98,7 +113,4 @@
 }
 .visible {
   opacity: 1; /* Полная видимость при необходимости отображения */
-}
-.selected {
-  background-color: rgb(87, 86, 86);
 }

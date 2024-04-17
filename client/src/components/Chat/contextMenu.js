@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ContextMenu.module.css";
 import { handleCopy } from "./chatServise/handleCopy";
+import { handleEditMessage } from "./chatServise/handleUpdate";
 const ContextMenu = ({
   x,
   y,
   onDelete,
+  onEdit,
+  messageId,
   onToggleSelect,
   handleDeleteSelectedParams,
   selectedMessages,
@@ -29,11 +32,14 @@ const ContextMenu = ({
       }`}
     >
       <ul className={styles.menu}>
-        <li
-          className={`${styles.menuItem} ${styles.selected}`}
-          onClick={onToggleSelect}
-        >
+        <li className={`${styles.menuItem} `} onClick={onToggleSelect}>
           Выбрать
+        </li>
+        <li
+          className={`${styles.menuItem} `}
+          onClick={() => onEdit(messageId, selectedText)}
+        >
+          Изменить...
         </li>
         <li
           className={`${styles.menuItem} ${styles.copy}`}
@@ -58,5 +64,3 @@ const ContextMenu = ({
 };
 
 export default ContextMenu;
-
-//ОСТАНОВИЛСЯ НА ОПТИМИЗАЦИИ CONTEX MENU

@@ -9,6 +9,11 @@ chatRouter.post("/:chatId", checkToken, ChatController.addNewMessage);
 chatRouter.get("/:chatId", checkToken, ChatController.getChatWithMessages);
 chatRouter.get("/user/all", checkToken, ChatController.getAllUserChats);
 chatRouter.put("/:chatId", checkToken, ChatController.addUserToChat);
+chatRouter.patch(
+  "/messages/:messageId",
+  checkToken,
+  ChatController.updateMessage
+);
 chatRouter.delete(
   "/:chatId/messages",
   checkToken,

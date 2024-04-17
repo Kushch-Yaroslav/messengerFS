@@ -6,6 +6,7 @@ import styles from "./Dashboard.module.css";
 import history from "../../browserHistory";
 import { connect } from "react-redux";
 import { getUserDataAction } from "../../actions/actionCreators";
+import { ChatProvider } from "../../components/Chat/ChatServiseProvider/ChatServiseProvider";
 
 import MiddleHeader from "../../components/middleHeader";
 const Dashboard = (props) => {
@@ -28,7 +29,6 @@ const Dashboard = (props) => {
             <MiddleHeader />
           </div>
         )}
-
         <Chat />
         {props.currentChat && <MessageArea />}
       </section>

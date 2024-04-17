@@ -1,30 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MessageArea.module.css";
-import { sendNewMessageAction } from "../../actions/actionCreators";
+import {
+  sendNewMessageAction,
+  setEditableMessage,
+  clearEditableMessage,
+  updateMessageAction,
+} from "../../actions/actionCreators";
 import { connect } from "react-redux";
-import { socket } from "../../api/socket";
-const MessageArea = (props) => {
+const MessageArea = ({
+  currentChat,
+  editableMessage,
+  sendMessage,
+  setEditableMessage,
+  clearEditableMessage,
+  updateMessage,
+}) => {
   const [message, setMessage] = useState("");
+  const [currentEditingMessageId, setCurrentEditingMessageId] = useState(null);
+
+  useEffect(() => {
+    if (editableMessage && editableMessage.messageId) {
+      setMessage(editableMessage.text);
+      setCurrentEditingMessageId(editableMessage.messageId);
+    } else {
+      setCurrentEditingMessageId(null); // Убедитесь, что здесь правильно очищается ID
+    }
+  }, [editableMessage]);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    const trimMessage = message.trim();
-    if (!trimMessage) {
-      return;
+    const trimmedMessage = message.trim();
+    if (!trimmedMessage) return;
+
+    if (currentEditingMessageId) {
+      console.log(`Sending update for message ID: ${currentEditingMessageId}`);
+      updateMessage(currentEditingMessageId, { body: trimmedMessage });
+      setCurrentEditingMessageId(null); // Очистка ID после обновления
+    } else {
+      sendMessage({ body: trimmedMessage, chatId: currentChat._id });
     }
-    props.sendMessage({ body: message, chatId: props.currentChat._id });
-    // socket.emit("NEW_MESSAGE", {
-    //   body: trimMessage,
-    //   chatId: props.currentChat._id,
-    // });
-    setMessage(" ");
+
+    setMessage(""); // Очистка поля ввода
+    clearEditableMessage();
+  };
+  const changeHandler = (event) => {
+    setMessage(event.target.value);
   };
 
-  const changeHandler = ({ target: { value } }) => {
-    setMessage(value);
-  };
-
-  const handlerKey = (event) => {
+  const onKeyDown = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       onSubmitHandler(event);
@@ -41,7 +64,7 @@ const MessageArea = (props) => {
           placeholder="Введите сообщение..."
           onChange={changeHandler}
           className={styles.text}
-          onKeyDown={handlerKey}
+          onKeyDown={onKeyDown}
         />
         <button className={styles["send-btn"]}>&#10148;</button>
       </form>
@@ -49,10 +72,16 @@ const MessageArea = (props) => {
   );
 };
 
-const mapStateToProps = ({ currentChat }) => ({ currentChat });
+const mapStateToProps = ({ currentChat, editableMessage }) => ({
+  currentChat,
+  editableMessage,
+});
 
 const mapDispatchToProps = {
   sendMessage: sendNewMessageAction,
+  setEditableMessage: setEditableMessage,
+  clearEditableMessage: clearEditableMessage,
+  updateMessage: updateMessageAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageArea);

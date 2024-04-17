@@ -4,6 +4,7 @@ import {
   createMessageSaga,
   getUserChatsSaga,
   getChatSaga,
+  updateMessageSaga,
   deleteMessageSaga,
 } from "./chatSaga";
 import {
@@ -23,6 +24,7 @@ function* rootSaga() {
   yield takeLatest(ACTION_TYPES.GET_USER_CHATS_REQUEST, getUserChatsSaga);
   yield takeLatest(ACTION_TYPES.GET_CHAT_WITH_MESSAGES_REQUEST, getChatSaga);
   yield takeLatest(ACTION_TYPES.LOGIN_USER_LOGOUT, logOutSaga);
+  yield takeLatest(ACTION_TYPES.UPDATE_MESSAGE_REQUEST, updateMessageSaga);
   yield takeLatest(ACTION_TYPES.DELETE_MESSAGE_REQUEST, deleteMessageSaga);
 }
 
